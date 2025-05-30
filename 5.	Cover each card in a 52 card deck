@@ -1,0 +1,51 @@
+//	Cover each card in a 52 card deck
+
+class CardCoverage;
+  rand bit [11:0]card[3]; 
+ 
+  covergroup deck_cg;
+    option.per_instance=1;
+    HEARTS: coverpoint card[0] {
+      bins hearts_num[] = {[2:10]};
+      bins hearts_face_cards[]={[11:13]};
+      bins hearts_Ace = {1};
+        }
+    DIANONDS: coverpoint card[1] {
+      bins diamonds_num[] = {[2:10]};
+      bins diamonds_face_cards[]={[11:13]};
+      bins diamonds_Ace = {1};
+        }
+    SPADES: coverpoint card[2] {
+      bins spades_num[] = {[2:10]};
+      bins spades_face_cards[]={[11:13]};
+      bins spades_Ace = {1};
+        }
+    CLUBS: coverpoint card[3] {
+      bins clubs_num[] = {[2:10]};
+      bins clubs_face_cards[]={[11:13]};
+      bins clubs_Ace = {1};
+    }
+    endgroup
+
+    // Constructor
+    function new();
+        deck_cg = new();
+    endfunction
+
+endclass
+
+module tb;
+  initial begin
+    CardCoverage crd_cov;
+    crd_cov=new();
+    repeat(15000)begin
+      crd_cov.randomize();
+      crd_cov.deck_cg.sample();
+    end
+    $display("Coverage Achieved: %0.2f%%", crd_cov.deck_cg.get_coverage());
+  end
+endmodule
+    
+
+
+
